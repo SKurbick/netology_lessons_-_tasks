@@ -12,7 +12,7 @@ with conn.cursor() as cur:
     cur.execute("""
                 CREATE TABLE IF NOT EXISTS telephone(
                  telephone_id SERIAL PRIMARY KEY,
-                 number INTEGER UNIQUE
+                 number DECIMAL UNIQUE
                  );
                  """)
 
@@ -36,12 +36,72 @@ with conn.cursor() as cur:
                     """, (name, surname, email))
 
 
-
-    add_person(cur, 'Kurban', 'Akhmedov', 'malkolm')
+    add_person(cur, 'Kurban', 'Akhmedov', 'malkolm.63.zed@mail.ru')
     conn.commit()
+
+
     # Функция, позволяющая добавить телефон для существующего клиента
+    def add_telephone(cursor, number, name, surname):
+        cursor.execute("""
+        INSERT INTO telephone(number)
+        VALUES( %s );""", (number,))
+        #
+        cursor.execute("""
+                        UPDATE person set telephone_id = (SELECT telephone_id FROM telephone WHERE number=%s ) 
+                        WHERE name=%s AND surname=%s ;
+                        """, (number, name, surname))
+
+        conn.commit()
+
+
+    add_telephone(cur, '89640206389', 'Kurban', 'Akhmedov')
+
+
     # Функция, позволяющая изменить данные о клиенте
+    def update_person(cursor, name: str, surname: str, mail: str):
+        pass
+
+
+    #
+    #     cursor.execute("""
+    #                     UPDATE person set
+    #                     """)
+
     # Функция, позволяющая удалить телефон для существующего клиента
+    def del_telephone_date(cursor, name, surname):
+        cursor.execute("""
+                                    select person.telephone_id from
+                                    person join telephone on person.telephone_id =telephone.telephone_id
+                                    WHERE name=%s AND surname=%s;
+                                    """, (name, surname))
+        id_number = cur.fetchone()[0]
+
+        cursor.execute("""
+                        UPDATE person SET telephone_id=null WHERE name=%s AND surname=%s ;
+                        """, (name, surname))
+
+        cursor.execute("""
+                    DELETE FROM telephone WHERE telephone_id=%s ; 
+                    """, (id_number,))
+        print(id_number)
+
+        conn.commit()
+
+
+    # del_telephone_date(cur, 'Kurban', 'Akhmedov')
+
     # Функция, позволяющая удалить существующего клиента
+    def del_person_date(cursor, name, surname):
+        cursor.execute("""
+                        DELETE FROM person WHERE name=%s AND surname=%s;
+                        """, (name, surname))
+
+        conn.commit()
+
+
+    # del_person_date(cur,'Kurban', 'Akhmedov')
+
     # Функция, позволяющая найти клиента по его данным (имени, фамилии, email-у или телефону)
+    def find_person_date():
+        pass
 conn.close()
