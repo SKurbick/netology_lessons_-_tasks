@@ -27,8 +27,8 @@ class Homework(Base):
     course_id = sq.Column(sq.Integer, sq.ForeignKey("course.id"), nullable=False)
 
     # course = relationship(Course, back_populates="homeworks")
-    course = relationship(Course,
-                          backref="homeworks")  # с помощью этой переменной мы связывем с id Course (foreign key)
+    course = relationship(Course, backref="homeworks")
+    # с помощью этой переменной мы связывем с id Course (foreign key)
 
     def __str__(self):
         return f'Homework {self.id}: ({self.number}, {self.description}, {self.course_id})'

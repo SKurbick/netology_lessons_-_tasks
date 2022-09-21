@@ -1,8 +1,7 @@
 import sqlalchemy  # модуль для работы с SQL таблицами (в нашем случае  postgresql) через ORM
+# импортирует модули классов и функцию для создания таблиц
 from sqlalchemy.orm import sessionmaker
-
-from ORM.models_lesson import create_tables, Course, \
-    Homework  # импортирует модули классов и функцию для создания таблиц
+from ORM.models_lesson import create_tables, Course, Homework
 
 DSN = 'postgresql://postgres:6336@localhost:5432/work_py_db'
 # указываем используемую СУБД, пользователя, пароль к нему, хост, порт и саму БД
@@ -43,14 +42,14 @@ for c in session.query(Course).join(Homework.course).filter(Homework.number == 2
     # касающийся таблицы Course. Аналогично SQL
     print(c)
 
-subq = session.query(Homework).filter(Homework.description.like('%сложн%')).subquery()#создаем подзапрос
+subq = session.query(Homework).filter(Homework.description.like('%сложн%')).subquery()  # создаем подзапрос
 for course in session.query(Course).join(subq, Course.id == subq.c.course_id).all():
     print(course)
 
-session.query(Course).filter(Course.name == 'Java').update(({'name': 'JavaScript'}))# изменение данных
+session.query(Course).filter(Course.name == 'Java').update(({'name': 'JavaScript'}))  # изменение данных
 session.commit()
 
-session.query(Course).filter(Course.name == 'JavaScript').delete() # удаление данных
+session.query(Course).filter(Course.name == 'JavaScript').delete()  # удаление данных
 session.commit()
 
 session.close()
