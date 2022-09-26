@@ -23,15 +23,27 @@ for record in data:
     session.add(model(id=record.get('pk'), **record.get('fields')))
 session.commit()
 
-if __name__ == "__main__":
 
-    find_pub = input("введите название или id издателя:")
+def search_publisher():
+    search_pub = input("введите название или id издателя:")
     try:
-        if type(int(find_pub)) == int:
-            for v in session.query(Publisher).filter(Publisher.id == int(find_pub)).all():
-                print(v)
+        if type(int(search_pub)) == int:
+            for elem in session.query(Publisher).filter(Publisher.id == int(search_pub)).all():
+                print(elem)
     except ValueError:
-        for v in session.query(Publisher).filter(Publisher.name == find_pub).all():
-            print(v)
+        for elem in session.query(Publisher).filter(Publisher.name == search_pub).all():
+            print(elem)
 
+
+def search_shop():
+    what_shop = input('Введите название книги:')
+
+    for v in session.query(Shop).join(Stock).join(Book).filter(Book.title == what_shop).all():
+        print('ваша книга продаётся в магазинах ниже:')
+        print(v)
+
+
+if __name__ == "__main__":
+    search_publisher()
+    search_shop()
 session.close()
