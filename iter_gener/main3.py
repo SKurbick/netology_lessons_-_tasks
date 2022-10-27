@@ -15,3 +15,5 @@ def get_swapi_people():
 
 for item in get_swapi_people():
     print(item)
+
+

@@ -32,8 +32,12 @@ class FlatIterator:
 
 
 if __name__ == '__main__':
+
     for elem in FlatIterator(nested_list):
         print(elem)
 
-flat_list = [item for item in FlatIterator(nested_list)]
-print(flat_list)
+    flat_list = [item for item in FlatIterator(nested_list)]
+    print(flat_list)
+
+
+
