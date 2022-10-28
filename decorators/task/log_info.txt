@@ -1,0 +1,5 @@
+
+            function name: <function get_personage at 0x7f33f47b9f30>
+            function arguments: (1,)_{}      
+            date: Oct 28 2022 17:14:01
+                    
